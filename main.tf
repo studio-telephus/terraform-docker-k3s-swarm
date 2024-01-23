@@ -34,6 +34,8 @@ module "docker_swarm_privileged" {
       container_path = "/sys/fs/cgroup"
       host_path      = "/sys/fs/cgroup"
       read_only      = true
+      from_container = null
+      volume_name    = null
     }
   ]
 }
