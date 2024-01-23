@@ -20,7 +20,7 @@ data "docker_image" "docker_ubuntu_systemd" {
 module "docker_swarm_privileged" {
   source       = "github.com/studio-telephus/terraform-docker-swarm.git?ref=main"
   image        = data.docker_image.docker_ubuntu_systemd
-  containers   = var.servers
+  containers   = var.containers
   restart      = var.restart
   exec_enabled = true
   network_name = var.network_name

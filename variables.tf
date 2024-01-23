@@ -4,7 +4,7 @@ variable "swarm_private_key" {
   sensitive   = true
 }
 
-variable "servers" {
+variable "containers" {
   type = list(object({
     name         = string
     ipv4_address = string
