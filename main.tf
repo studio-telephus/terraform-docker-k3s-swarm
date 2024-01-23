@@ -11,26 +11,29 @@ locals {
   container_environment = {
     SSH_AUTHORIZED_KEYS = base64encode(data.tls_public_key.swarm_public_key.public_key_openssh)
   }
-  servers = [for i, item in var.servers : {
-    name         = item.name
-    network_name = var.network_name
-    ipv4_address = item.ipv4_address
-    mount_dirs   = local.container_mount_dirs
-    environment  = local.container_environment
-    exec         = local.container_exec
-    privileged   = true
-    entrypoint   = []
-  }]
 }
 
 data "docker_image" "docker_ubuntu_systemd" {
   name = "eniocarboni/docker-ubuntu-systemd:22.04"
 }
 
-module "docker_swarm" {
+module "docker_swarm_privileged" {
   source       = "github.com/studio-telephus/terraform-docker-swarm.git?ref=main"
   image        = data.docker_image.docker_ubuntu_systemd
-  containers   = local.servers
+  containers   = var.servers
   restart      = var.restart
   exec_enabled = true
+  network_name = var.network_name
+  mount_dirs   = local.container_mount_dirs
+  environment  = local.container_environment
+  exec         = local.container_exec
+  privileged   = true
+  entrypoint   = []
+  volumes = [
+    {
+      container_path = "/sys/fs/cgroup"
+      host_path      = "/sys/fs/cgroup"
+      read_only      = true
+    }
+  ]
 }
