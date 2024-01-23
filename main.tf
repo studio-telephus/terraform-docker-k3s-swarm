@@ -13,13 +13,13 @@ locals {
   }
 }
 
-data "docker_image" "docker_ubuntu_systemd" {
+resource "docker_image" "docker_ubuntu_systemd" {
   name = "eniocarboni/docker-ubuntu-systemd:22.04"
 }
 
 module "docker_swarm_privileged" {
   source       = "github.com/studio-telephus/terraform-docker-swarm.git?ref=main"
-  image        = data.docker_image.docker_ubuntu_systemd
+  image        = docker_image.docker_ubuntu_systemd.id
   containers   = var.containers
   restart      = var.restart
   exec_enabled = true
