@@ -14,7 +14,7 @@ locals {
 }
 
 resource "docker_image" "docker_ubuntu_systemd" {
-  name = "eniocarboni/docker-ubuntu-systemd:22.04"
+  name = "robertdebock/debian:bookworm"
 }
 
 module "docker_swarm_privileged" {
