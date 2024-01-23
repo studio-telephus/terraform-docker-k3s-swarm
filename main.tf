@@ -19,7 +19,7 @@ resource "docker_image" "docker_ubuntu_systemd" {
 
 module "docker_swarm_privileged" {
   source       = "github.com/studio-telephus/terraform-docker-swarm.git?ref=main"
-  image        = docker_image.docker_ubuntu_systemd.id
+  image        = docker_image.docker_ubuntu_systemd.image_id
   containers   = var.containers
   restart      = var.restart
   exec_enabled = true
