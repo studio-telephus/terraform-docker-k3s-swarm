@@ -3,7 +3,7 @@ data "tls_public_key" "swarm_public_key" {
 }
 
 locals {
-  container_mount_dirs = [
+  container_upload_dirs = [
     "${path.module}/filesystem-shared-ca-certificates",
     "${path.module}/filesystem",
   ]
@@ -17,25 +17,28 @@ resource "docker_image" "docker_ubuntu_systemd" {
   name = "robertdebock/debian:bookworm"
 }
 
-module "docker_swarm_privileged" {
-  source       = "github.com/studio-telephus/terraform-docker-swarm.git?ref=main"
-  image        = docker_image.docker_ubuntu_systemd.image_id
-  containers   = var.containers
-  restart      = var.restart
-  exec_enabled = true
-  network_name = var.network_name
-  mount_dirs   = local.container_mount_dirs
-  environment  = local.container_environment
-  exec         = local.container_exec
-  privileged   = true
-  entrypoint   = []
-  volumes = [
+resource "docker_volume" "k3s_longhorn" {
+  name = "k3s-${var.env}-longhorn"
+}
+
+module "swarm_containers" {
+  count      = length(var.containers)
+  source     = "github.com/studio-telephus/terraform-docker-container.git?ref=main"
+  name       = var.containers[count.index].name
+  image      = docker_image.docker_ubuntu_systemd.image_id
+  restart    = var.restart
+  privileged = true
+  entrypoint = []
+  networks_advanced = [
     {
-      container_path = "/sys/fs/cgroup"
-      host_path      = "/sys/fs/cgroup"
-      read_only      = false
-      from_container = null
-      volume_name    = null
+      name         = var.network_name
+      ipv4_address = var.containers[count.index].ipv4_address
     }
   ]
+  upload_dirs  = local.container_upload_dirs
+  exec_enabled = true
+  exec         = local.container_exec
+  volumes      = var.volumes
+  mounts       = var.mounts
+  environment  = local.container_environment
 }

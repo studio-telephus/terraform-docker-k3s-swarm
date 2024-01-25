@@ -18,3 +18,13 @@ variable "network_name" {
 variable "restart" {
   type = string
 }
+
+variable "mounts" {
+  type    = list(any)
+  default = []
+}
+
+variable "volumes" {
+  type    = list(any)
+  default = []
+}
