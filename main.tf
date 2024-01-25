@@ -17,10 +17,6 @@ resource "docker_image" "docker_ubuntu_systemd" {
   name = "robertdebock/debian:bookworm"
 }
 
-resource "docker_volume" "k3s_longhorn" {
-  name = "k3s-${var.env}-longhorn"
-}
-
 module "swarm_containers" {
   count      = length(var.containers)
   source     = "github.com/studio-telephus/terraform-docker-container.git?ref=main"
