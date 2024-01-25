@@ -20,11 +20,11 @@ variable "restart" {
 }
 
 variable "mounts" {
-  type    = list(any)
+  type    = any
   default = []
 }
 
 variable "volumes" {
-  type    = list(any)
+  type    = any
   default = []
 }
