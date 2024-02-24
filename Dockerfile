@@ -26,5 +26,7 @@ RUN apt-get update ; \
     rm -rf /lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup* ; \
     rm -rf /lib/systemd/system/systemd-update-utmp*
 
+RUN systemctl enable ssh
+
 VOLUME [ "/sys/fs/cgroup" ]
 CMD ["/lib/systemd/systemd"]
