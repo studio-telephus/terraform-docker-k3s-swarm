@@ -28,5 +28,5 @@ RUN apt-get update ; \
 
 RUN systemctl enable ssh
 
-VOLUME [ "/sys/fs/cgroup" ]
+# VOLUME [ "/sys/fs/cgroup" ]
 CMD ["/lib/systemd/systemd"]
