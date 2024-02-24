@@ -34,4 +34,7 @@ module "swarm_containers" {
   ]
   volumes      = var.volumes
   mounts       = var.mounts
+  lifecycle {
+    prevent_destroy = true
+  }
 }
