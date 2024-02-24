@@ -1,5 +1,15 @@
 FROM debian:bookworm
 
+COPY ./filesystem /.
+COPY ./filesystem-shared-ca-certificates /.
+
+ARG _SSH_AUTHORIZED_KEYS
+ENV SSH_AUTHORIZED_KEYS=${_SSH_AUTHORIZED_KEYS}
+
+RUN bash /mnt/pre-install.sh
+RUN bash /mnt/setup-ca.sh
+RUN bash /mnt/install-ssh.sh
+
 ENV container docker
 ENV DEBIAN_FRONTEND noninteractive
 
