@@ -20,7 +20,7 @@ resource "docker_image" "swarm_image" {
 
 module "swarm_containers" {
   count      = length(var.containers)
-  source     = "github.com/studio-telephus/terraform-docker-container.git?ref=1.0.3"
+  source     = "github.com/studio-telephus/terraform-docker-container.git?ref=main"
   name       = var.containers[count.index].name
   image      = docker_image.swarm_image.image_id
   restart    = var.restart
