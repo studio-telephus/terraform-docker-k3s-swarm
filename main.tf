@@ -25,6 +25,7 @@ module "swarm_containers" {
   image      = docker_image.swarm_image.image_id
   restart    = var.restart
   privileged = true
+  shm_size   = 1024
   networks_advanced = [
     {
       name         = var.network_name
