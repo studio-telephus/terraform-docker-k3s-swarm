@@ -19,19 +19,21 @@ resource "docker_image" "swarm_image" {
 }
 
 module "swarm_containers" {
-  count      = length(var.containers)
-  source     = "github.com/studio-telephus/terraform-docker-container.git?ref=main"
-  name       = var.containers[count.index].name
-  image      = docker_image.swarm_image.image_id
-  restart    = var.restart
-  privileged = true
-  shm_size   = 1024
+  count         = length(var.containers)
+  source        = "github.com/studio-telephus/terraform-docker-container.git?ref=main"
+  name          = var.containers[count.index].name
+  image         = docker_image.swarm_image.image_id
+  restart       = var.restart
+  privileged    = true
+  shm_size      = 1024
+  cgroupns_mode = "host"
+
   networks_advanced = [
     {
       name         = var.network_name
       ipv4_address = var.containers[count.index].ipv4_address
     }
   ]
-  volumes      = var.volumes
-  mounts       = var.mounts
+  volumes = var.volumes
+  mounts  = var.mounts
 }
