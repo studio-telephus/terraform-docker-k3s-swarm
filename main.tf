@@ -19,12 +19,12 @@ resource "docker_image" "docker_ubuntu_systemd" {
 
 module "swarm_containers" {
   count      = length(var.containers)
-  source     = "github.com/studio-telephus/terraform-docker-container.git?ref=main"
+  source     = "github.com/studio-telephus/terraform-docker-container.git?ref=1.0.3"
   name       = var.containers[count.index].name
   image      = docker_image.docker_ubuntu_systemd.image_id
   restart    = var.restart
   privileged = true
-  entrypoint = []
+  # entrypoint = []
   networks_advanced = [
     {
       name         = var.network_name
